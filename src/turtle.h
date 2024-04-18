@@ -63,39 +63,13 @@ extern struct State state;
  * @param width the width of the window
  * @param height the height of the window
  */
-void create_window(struct Window *window, u32 width, u32 height);
+void CreateWindow(struct Window *window, u32 width, u32 height);
 
 /*
  * Swaps opengl buffers and handles input events
  */
-void update_window(void);
+void UpdateWindow(void);
 
-void create_renderer(struct Renderer *renderer, size_t max_quad_count, struct Memory_Arena *memory);
-
-/*
- * Sets the size of the renderer's render target
- *
- * @param width the width of the renderer
- * @param height the height of the renderer
- */
-void set_renderer_size(u32 width, u32 height);
-
-/*
- *  Draws a line
- *
- *  @param start the x, y position of the start of the line
- *  @param end the x, y position of the end of the line
- *  @param color the color of the line
- */
-void draw_line(v2 start, v2 end, v4 color);
-
-/*
- *  Draws a rectangle
- *
- *  @param position the x, y position of the top left corner
- *  @param size the width and height of the rectangle
- *  @param color the color of the rectangle
- */
-void draw_rectangle(v2 position, v2 size, v4 color);
+void CreateRenderer(struct Renderer *renderer, size_t max_quad_count, struct Memory_Arena *memory);
 
 #endif
