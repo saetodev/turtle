@@ -54,14 +54,26 @@ int main(void) {
 
     f32 last_time = 0.0f;
 
+    vec2 position = { state.window.width / 2, state.window.height / 2 };
+    f32 speed = 100.0f;
+
     while (!state.window.closed) {
         f32 now_time = (f32)glfwGetTime();
         f32 delta_time = now_time - last_time;
         last_time = now_time;
 
+        {
+            char *buf = MemArenaAlloc(&state.temp_memory, 256);
+            sprintf(buf, "TURTLE | %f ms", delta_time * 1000.0f);
+            glfwSetWindowTitle(state.window.ref, buf);
+        }
+
+        position[0] += (state.input.keys['D'].down - state.input.keys['A'].down) * speed * delta_time;
+        position[1] += (state.input.keys['S'].down - state.input.keys['W'].down) * speed * delta_time;
+
         glClear(GL_COLOR_BUFFER_BIT);
 
-        DrawRectangle(&state.renderer, (vec2){ 32.0f, 32.0f }, (vec2){ 48.0f, 32.0f }, (vec4){ 0.5f, 0.5f, 0.85f, 1.0f });
+        DrawRectangle(&state.renderer, position, (vec2){ 48.0f, 32.0f }, (vec4){ 0.5f, 0.5f, 0.85f, 1.0f });
         DrawRectangle(&state.renderer, (vec2){ 300.0f, 200.0f }, (vec2){ 250.0f, 100.0f }, (vec4){ 1.0f, 0.25f, 0.25f, 1.0f });
         
         PresentRenderer(&state.renderer);
