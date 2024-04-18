@@ -70,6 +70,8 @@ void CreateWindow(struct Window *window, u32 width, u32 height);
  */
 void UpdateWindow(void);
 
+u32 CreateShader(const char *vertex_shader_src, const char *frag_shader_src); 
+
 /*
  * Creates a new renderer
  *
