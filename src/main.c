@@ -17,7 +17,9 @@ int main(void) {
         f32 delta_time = now_time - last_time;
         last_time = now_time;
 
-        
+        DrawRectangle(&state.renderer, (vec2){ 0.0f, 0.0f }, (vec2){ 1.0f, 1.0f }, (vec4){ 1.0f, 1.0f, 1.0f, 1.0f });
+        PresentRenderer(&state.renderer);
+
         UpdateWindow();    
     }
 

@@ -39,3 +39,45 @@ void CreateRenderer(struct Renderer *renderer, size_t max_quad_count, struct Mem
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib_size, index_buffer, GL_STATIC_DRAW);
     MemArenaPop(memory); 
 }
+
+void PresentRenderer(struct Renderer *renderer) { 
+    size_t size = sizeof(struct Vertex) * renderer->quad_count * RENDERER_VERTICES_PER_QUAD;
+    u32 count = renderer->quad_count * RENDERER_INDICES_PER_QUAD;
+
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size, renderer->vertex_buffer);
+    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
+
+    renderer->quad_count = 0;
+}
+
+void DrawRectangle(struct Renderer *renderer, vec2 position, vec2 size, vec4 color) {
+    if (renderer->quad_count >= renderer->max_quad_count) {
+        PresentRenderer(renderer);
+    }
+
+    u32 offset = renderer->quad_count * RENDERER_VERTICES_PER_QUAD;
+
+    vec4 quad_vertex_position[] = {
+        { -0.5f, -0.5f, 0.0f, 1.0f },
+        {  0.5f, -0.5f, 0.0f, 1.0f },
+        {  0.5f,  0.5f, 0.0f, 1.0f },
+        { -0.5f,  0.5f, 0.0f, 1.0f },
+    };
+
+    mat4 transform;
+    glm_mat4_identity(transform);
+    glm_translate(transform, position);
+    glm_scale(transform, size);
+
+    for (u32 i = 0; i < RENDERER_VERTICES_PER_QUAD; i++) {
+        renderer->vertex_buffer[offset + i].position[0] = quad_vertex_position[i][0];
+        renderer->vertex_buffer[offset + i].position[1] = quad_vertex_position[i][1];
+
+        renderer->vertex_buffer[offset + i].color[0] = color[0];
+        renderer->vertex_buffer[offset + i].color[1] = color[1];
+        renderer->vertex_buffer[offset + i].color[2] = color[2];
+        renderer->vertex_buffer[offset + i].color[3] = color[3];
+    }
+
+    renderer->quad_count++;
+}

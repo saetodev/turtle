@@ -29,8 +29,8 @@ struct Input {
 #define RENDERER_INDICES_PER_QUAD   6
 
 struct Vertex {
-    v2 position;
-    v4 color;
+    vec2 position;
+    vec4 color;
 };
 
 struct Renderer {
@@ -70,6 +70,30 @@ void CreateWindow(struct Window *window, u32 width, u32 height);
  */
 void UpdateWindow(void);
 
+/*
+ * Creates a new renderer
+ *
+ * @param renderer the struct to initialize
+ * @param max_quad_count the maximum numbers of quads allowed in one draw call
+ * @param memory the memory arena to allocate to
+ */
 void CreateRenderer(struct Renderer *renderer, size_t max_quad_count, struct Memory_Arena *memory);
+
+/*
+ * Pushes the current state of the renderer to the GPU
+ *
+ * @param renderer the rendering context
+ */
+void PresentRenderer(struct Renderer *renderer);
+
+/*
+ * Draws a rectangle
+ *
+ * @param renderer the rendering context
+ * @param position the x,y position of the rectangle
+ * @param size the size of the rectangle
+ * @param color the color of the rectangle
+ */
+void DrawRectangle(struct Renderer *renderer, vec2 position, vec2 size, vec4 color);
 
 #endif
