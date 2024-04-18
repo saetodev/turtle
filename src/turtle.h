@@ -44,6 +44,11 @@ struct Renderer {
     struct Vertex   *vertex_buffer;
 };
 
+struct Camera {
+    vec2 position;
+    mat4 projection;
+};
+
 struct State {
     struct Window       window;
     struct Renderer     renderer;
@@ -70,7 +75,8 @@ void CreateWindow(struct Window *window, u32 width, u32 height);
  */
 void UpdateWindow(void);
 
-u32 CreateShader(const char *vertex_shader_src, const char *frag_shader_src); 
+u32 CreateShader(const char *vertex_shader_src, const char *frag_shader_src);
+void SetShaderMat4(u32 shader, const char *name, mat4 m);
 
 /*
  * Creates a new renderer
@@ -80,6 +86,8 @@ u32 CreateShader(const char *vertex_shader_src, const char *frag_shader_src);
  * @param memory the memory arena to allocate to
  */
 void CreateRenderer(struct Renderer *renderer, size_t max_quad_count, struct Memory_Arena *memory);
+
+void StartFrame(struct Renderer *renderer, u32 shader, struct Camera *camera);
 
 /*
  * Pushes the current state of the renderer to the GPU

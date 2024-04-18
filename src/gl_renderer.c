@@ -25,6 +25,11 @@ u32 CreateShader(const char *vertex_shader_src, const char *frag_shader_src) {
     return program;
 }
 
+void SetShaderMat4(u32 shader, const char *name, mat4 m) {
+    i32 location = glGetUniformLocation(shader, name);
+    glUniformMatrix4fv(location, 1, GL_FALSE, &m[0][0]);
+}
+
 void CreateRenderer(struct Renderer *renderer, size_t max_quad_count, struct Memory_Arena *memory) {
     renderer->quad_count = 0;
     renderer->max_quad_count = max_quad_count;
@@ -67,6 +72,16 @@ void CreateRenderer(struct Renderer *renderer, size_t max_quad_count, struct Mem
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib_size, index_buffer, GL_STATIC_DRAW);
     MemArenaPop(memory); 
+}
+
+void StartFrame(struct Renderer *renderer, u32 shader, struct Camera *camera) {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glUseProgram(shader);
+
+    mat4 camera_view;
+    GetCameraView(camera, camera_view);
+    SetShaderMat4(shader, "u_mvp", camera_view);
 }
 
 void PresentRenderer(struct Renderer *renderer) { 
